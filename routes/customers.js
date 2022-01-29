@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Customer = require("../models/Customer");
+const Ticket = require("../models/Ticket");
 
 // Find all customers
 router.get("/", async (req, res) => {
@@ -9,6 +10,19 @@ router.get("/", async (req, res) => {
     res.json(customers);
   } catch (err) {
     res.json({ message: err });
+  }
+});
+
+//Get customer's tickets
+router.get("/tickets", async (req, res) => {
+  try {
+    const customer = await Customer.findOne({
+      citizenshipNumber: req.body.citizenshipNumber,
+    });
+    const tickets = await Ticket.find({ owner: customer._id });
+    res.json(tickets);
+  } catch (err) {
+    res.json(err);
   }
 });
 
