@@ -8,7 +8,6 @@ app.use(bodyParser.json());
 
 // IMPORT ROUTES
 const customersRoute = require("./routes/customers");
-
 app.use("/customers", customersRoute);
 
 // ROUTES
@@ -21,4 +20,7 @@ mongoose.connect("mongodb://127.0.0.1:27017", () => {
   console.log("Successfully connected!");
 });
 
-app.listen(3000);
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Listening on port ${PORT}`);
+});

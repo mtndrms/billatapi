@@ -2,25 +2,30 @@ const express = require("express");
 const router = express.Router();
 const Customer = require("../models/Customer");
 
-router.get("/", (req, res) => {
-  res.send("CUSTOMERS");
+// Find all customers
+router.get("/", async (req, res) => {
+  try {
+    const customers = await Customer.find();
+    res.json(customers);
+  } catch (err) {
+    res.json({ message: err });
+  }
 });
 
-router.post("/", (req, res) => {
+// Create customer
+router.post("/", async (req, res) => {
   const customer = new Customer({
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     citizenshipNumber: req.body.citizenshipNumber,
     birthDate: req.body.birthDate,
   });
-  customer
-    .save()
-    .then((data) => {
-      res.json(data);
-    })
-    .catch((err) => {
-      res.json({ message: err });
-    });
+  try {
+    const newCustomer = await customer.save();
+    res.json(newCustomer);
+  } catch (err) {
+    res.json({ message: err });
+  }
 });
 
 module.exports = router;
