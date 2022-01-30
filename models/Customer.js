@@ -25,6 +25,12 @@ const CustomerSchema = mongoose.Schema({
     type: Boolean,
     default: true,
   },
+  ticketsOwned: [
+    {
+      type: mongoose.Types.ObjectId,
+      ref: "Ticket",
+    },
+  ],
 });
 
 module.exports = mongoose.model("Customer", CustomerSchema);

@@ -18,9 +18,8 @@ router.get("/tickets", async (req, res) => {
   try {
     const customer = await Customer.findOne({
       citizenshipNumber: req.body.citizenshipNumber,
-    });
-    const tickets = await Ticket.find({ owner: customer._id });
-    res.json(tickets);
+    }).populate("ticketsOwned");
+    res.json(customer);
   } catch (err) {
     res.json(err);
   }
