@@ -1,19 +1,24 @@
 const mongoose = require("mongoose");
 
-const TicketSchema = mongoose.Schema({
+const Ticket = mongoose.Schema({
   seatNumber: {
     type: Number,
-    required: true,
-  },
-  owner: {
-    type: mongoose.Types.ObjectId,
-    ref: "Customer",
     required: true,
   },
   ticketCreationDate: {
     type: Date,
     default: Date.now,
   },
+  owner: {
+    type: mongoose.Types.ObjectId,
+    ref: "Customer",
+    required: true,
+  },
+  trip: {
+    type: mongoose.Types.ObjectId,
+    ref: "Trip",
+    required: true,
+  },
 });
 
-module.exports = mongoose.model("Ticket", TicketSchema);
+module.exports = mongoose.model("Ticket", Ticket);

@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const CustomerSchema = mongoose.Schema({
+const Customer = mongoose.Schema({
   firstName: {
     type: String,
     required: true,
@@ -17,6 +17,14 @@ const CustomerSchema = mongoose.Schema({
     type: Date,
     required: true,
   },
+  phoneNumber: {
+    type: String,
+    required: true,
+  },
+  email: {
+    type: String,
+    required: true,
+  },
   dateAccountCreated: {
     type: Date,
     default: Date.now,
@@ -25,7 +33,7 @@ const CustomerSchema = mongoose.Schema({
     type: Boolean,
     default: true,
   },
-  ticketsOwned: [
+  ticketsBought: [
     {
       type: mongoose.Types.ObjectId,
       ref: "Ticket",
@@ -33,4 +41,4 @@ const CustomerSchema = mongoose.Schema({
   ],
 });
 
-module.exports = mongoose.model("Customer", CustomerSchema);
+module.exports = mongoose.model("Customer", Customer);

@@ -3,40 +3,42 @@ const router = express.Router();
 const Ticket = require("../models/Ticket");
 const Customer = require("../models/Customer");
 
+// Get all tickets
 router.get("/", async (req, res) => {
   try {
-    const allTickets = await Ticket.find().populate("owner");
+    const allTickets = await Ticket.find();
     res.json(allTickets);
   } catch (err) {
-    res.json(err);
+    res.status(400).json({ message: err });
   }
 });
 
-// TODO: UPDATE CUSTOMER DATA WHEN TICKET SOLD!
+// Create ticket and update customer data
 router.post("/", async (req, res) => {
   const ticket = new Ticket({
     seatNumber: req.body.seatNumber,
     owner: req.body.owner,
   });
   const customerWhoBoughtTheTicket = await Customer.findById(ticket.owner);
-  customerWhoBoughtTheTicket.ticketsOwned.push(ticket);
+  customerWhoBoughtTheTicket.ticketsBought.push(ticket);
   await customerWhoBoughtTheTicket.updateOne({
-    ticketsOwned: customerWhoBoughtTheTicket.ticketsOwned,
+    ticketsBought: customerWhoBoughtTheTicket.ticketsBought,
   });
   try {
     const newTicket = await ticket.save();
     res.json(newTicket);
   } catch (err) {
-    res.json(err);
+    res.status(400).json({ message: err });
   }
 });
 
+// Delete ticket by it's ID
 router.delete("/", async (req, res) => {
   try {
-    const deleted = await Ticket.findByIdAndDelete(req.body.deleteThis);
-    res.json(deleted);
+    const deletedTicket = await Ticket.findByIdAndDelete(req.query.ticketId);
+    res.json(deletedTicket);
   } catch (err) {
-    res.json(err);
+    res.status(400).json({ message: err });
   }
 });
 
