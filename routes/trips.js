@@ -65,3 +65,5 @@ router.delete("/", async (req, res) => {
 });
 
 // TODO: Delete trip(s) by it's (their) ID's
+
+module.exports = router;

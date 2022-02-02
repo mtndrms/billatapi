@@ -8,10 +8,14 @@ app.use(bodyParser.json());
 // IMPORT ROUTES
 const customersRoute = require("./routes/customers");
 const ticketsRoute = require("./routes/tickets");
+const tripsRoute = require("./routes/trips");
+const stationsRoute = require("./routes/stations");
 
 // ROUTES
 app.use("/customers", customersRoute);
 app.use("/tickets", ticketsRoute);
+app.use("/trips", tripsRoute);
+app.use("/stations", stationsRoute);
 
 app.get("/", (req, res) => {
   res.send("Hello world!");
