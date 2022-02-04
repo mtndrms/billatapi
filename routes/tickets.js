@@ -18,6 +18,7 @@ router.post("/", async (req, res) => {
   const ticket = new Ticket({
     seatNumber: req.body.seatNumber,
     owner: req.body.owner,
+    trip: req.body.trip,
   });
   const customerWhoBoughtTheTicket = await Customer.findById(ticket.owner);
   customerWhoBoughtTheTicket.ticketsBought.push(ticket);

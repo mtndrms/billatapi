@@ -2,6 +2,30 @@ const express = require("express");
 const Trip = require("../models/Trip");
 const router = express.Router();
 
+// a and b are javascript Date objects
+function dateDiffInDays(a, b) {
+  const aDate = new Date(a);
+  const bDate = new Date(b);
+
+  // Discard the time and time-zone information.
+  const utc1 = Date.UTC(
+    aDate.getFullYear(),
+    aDate.getMonth(),
+    aDate.getDate(),
+    aDate.getHours(),
+    aDate.getMinutes()
+  );
+  const utc2 = Date.UTC(
+    bDate.getFullYear(),
+    bDate.getMonth(),
+    bDate.getDate(),
+    bDate.getHours(),
+    bDate.getMinutes()
+  );
+
+  return Math.floor((utc2 - utc1) / (1000 * 60));
+}
+
 // Get all trips
 router.get("/", async (req, res) => {
   try {
@@ -15,7 +39,7 @@ router.get("/", async (req, res) => {
 // Get trip by it's ID
 router.get("/:tripId", async (req, res) => {
   try {
-    const trip = await Trip.findById(req.params.tripId);
+    const trip = await Trip.findById(req.params.tripId).populate("route");
     res.json(trip);
   } catch (err) {
     res.status(400).json({ message: err });
@@ -42,7 +66,7 @@ router.post("/", async (req, res) => {
     arrivalDate: req.body.arrivalDate,
     departureLocation: req.body.departureLocation,
     destinationLocation: req.body.destinationLocation,
-    // travelTime: arrivalDate - departureDate,
+    travelTime: dateDiffInDays(req.body.departureDate, req.body.arrivalDate),
     route: req.body.route,
     price: req.body.price,
   });
