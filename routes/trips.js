@@ -67,6 +67,7 @@ router.post("/", async (req, res) => {
     departureLocation: req.body.departureLocation,
     destinationLocation: req.body.destinationLocation,
     travelTime: dateDiffInDays(req.body.departureDate, req.body.arrivalDate),
+    carrier: req.body.carrier,
     route: req.body.route,
     price: req.body.price,
   });

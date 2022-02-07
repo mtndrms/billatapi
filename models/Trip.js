@@ -23,6 +23,11 @@ const Trip = mongoose.Schema({
     type: Number,
     default: 0,
   },
+  carrier: {
+    type: mongoose.Types.ObjectId,
+    ref: "Carrier",
+    required: true,
+  },
   route: {
     type: mongoose.Types.ObjectId,
     ref: "Route",
