@@ -38,8 +38,8 @@ router.get("/", async (req, res) => {
 
 router.get("/carrier", async (req, res) => {
   try {
-    const carrier = await Carrier.find({
-      name: req.query.name,
+    const carrier = await Carrier.findOne({
+      _id: req.query.carrierId,
     });
     res.json(carrier);
   } catch (err) {

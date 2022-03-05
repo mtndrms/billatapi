@@ -33,6 +33,11 @@ const Trip = mongoose.Schema({
     ref: "Route",
     required: true,
   },
+  vehicle: {
+    type: mongoose.Types.ObjectId,
+    ref: "Vehicle",
+    required: true,
+  },
   price: {
     type: Number,
     required: true,

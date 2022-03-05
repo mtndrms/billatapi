@@ -3,7 +3,7 @@ const Trip = require("../models/Trip");
 const router = express.Router();
 
 // a and b are javascript Date objects
-function dateDiffInDays(a, b) {
+function calculateTravelTime(a, b) {
   const aDate = new Date(a);
   const bDate = new Date(b);
 
@@ -29,7 +29,9 @@ function dateDiffInDays(a, b) {
 // Get all trips
 router.get("/", async (req, res) => {
   try {
-    const trips = await Trip.find();
+    const trips = await Trip.find().populate(
+      "departureLocation destinationLocation carrier route vehicle"
+    );
     res.json(trips);
   } catch (err) {
     res.status(400).json({ message: err });
@@ -39,7 +41,9 @@ router.get("/", async (req, res) => {
 // Get trip by it's ID
 router.get("/:tripId", async (req, res) => {
   try {
-    const trip = await Trip.findById(req.params.tripId).populate("route");
+    const trip = await Trip.findById(req.params.tripId).populate(
+      "route departureLocation destinationLocation carrier vehicle"
+    );
     res.json(trip);
   } catch (err) {
     res.status(400).json({ message: err });
@@ -48,6 +52,7 @@ router.get("/:tripId", async (req, res) => {
 
 // Get trip(s) by it's (their) departure locations and destination locations
 router.get("/loc", async (req, res) => {
+  console.log(req.query);
   try {
     const result = await Trip.find({
       dep: req.query.departureLocation,
@@ -66,9 +71,13 @@ router.post("/", async (req, res) => {
     arrivalDate: req.body.arrivalDate,
     departureLocation: req.body.departureLocation,
     destinationLocation: req.body.destinationLocation,
-    travelTime: dateDiffInDays(req.body.departureDate, req.body.arrivalDate),
+    travelTime: calculateTravelTime(
+      req.body.departureDate,
+      req.body.arrivalDate
+    ),
     carrier: req.body.carrier,
     route: req.body.route,
+    vehicle: req.body.vehicle,
     price: req.body.price,
   });
   try {
