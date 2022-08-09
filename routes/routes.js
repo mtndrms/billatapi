@@ -13,8 +13,8 @@ router.get("/", async (req, res) => {
 
 router.get("/:routeId", async (req, res) => {
   try {
-    const routes = await Route.findById(req.params.routeId).populate("route");
-    res.json(routes);
+    const route = await Route.findById(req.params.routeId).populate("route");
+    res.json(route);
   } catch (err) {
     res.status(400).json({ message: err });
   }
