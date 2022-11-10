@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const express = require("express");
 const bodyParser = require("body-parser");
+require("dotenv").config();
 
 const app = express();
 app.use(bodyParser.json());
@@ -25,13 +26,26 @@ app.use("/vehicles", vehiclesRoute);
 app.use("/uploads", express.static("uploads"));
 
 app.get("/", (req, res) => {
-  res.send("Hello world!");
+  res.send("Hello World!");
 });
 
+let DB_USERNAME = process.env.DB_USERNAME;
+let DB_PASSWORD = process.env.DB_PASSWORD;
+let DB_NAME = process.env.DB_NAME;
+
 // CONNECT TO DATABASE
-mongoose.connect("mongodb://127.0.0.1:27017/billatdb", () => {
-  console.log("Successfully connected!");
-});
+mongoose.connect(
+  "mongodb+srv://" +
+    DB_USERNAME +
+    ":" +
+    DB_PASSWORD +
+    "@billat.qwvjsk3.mongodb.net/" +
+    DB_NAME +
+    "?retryWrites=true&w=majority",
+  () => {
+    console.log("Successfully connected!");
+  }
+);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
